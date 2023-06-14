@@ -24,6 +24,11 @@ module.exports = {
   postLogin: async (req, res) => {
     try {
       const { email, password } = { ...req.body };
+      if (!email || !password) {
+        return res
+          .status(401)
+          .send({ message: 'provide necessary information' });
+      }
       const user = await userModel.findOne({ email: email });
       if (user) {
         const comparison = await bcrypt.compare(password, user.password);
@@ -48,17 +53,29 @@ module.exports = {
     }
   },
   getHome: async (req, res) => {
-    const cookie = req.cookies['jwt'];
-    const secret = process.env.SECRET_KEY;
-    const claims = jwt.verify(cookie, secret);
-    if (!claims) {
-      res.status(401).send({ message: 'unauthenticated' });
-    } else {
-      const user = await userModel.findOne({
-        _id: claims._id,
-      });
-      const { password, ...data } = await user.toJSON();
-      res.send(data);
+    try {
+      const cookie = req.cookies['jwt'];
+      if (cookie) {
+        const secret = process.env.SECRET_KEY;
+        const claims = jwt.verify(cookie, secret);
+        if (!claims) {
+          res.status(401).send({ message: 'unauthenticated' });
+        } else {
+          const user = await userModel.findOne({
+            _id: claims._id,
+          });
+          const { password, ...data } = await user.toJSON();
+          res.send(data);
+        }
+      } else {
+        res.status(401).send({ message: 'unauthenticated' });
+      }
+    } catch (error) {
+      res.send({ message: error.message });
     }
+  },
+  postLogout: (req, res) => {
+    res.cookie('jwt', '', { maxAge: 0 });
+    res.send({ message: 'success' });
   },
 };
