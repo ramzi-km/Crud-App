@@ -7,6 +7,11 @@ module.exports = {
   postSignup: async (req, res) => {
     try {
       let { name, email, password } = { ...req.body };
+      if (!email || !password || !name) {
+        return res
+          .status(401)
+          .send({ message: 'provide necessary information' });
+      }
       password = await bcrypt.hash(password, 10);
       const findUser = await userModel.findOne({ email: email });
       if (findUser) {
