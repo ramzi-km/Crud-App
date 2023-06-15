@@ -15,7 +15,7 @@ module.exports = {
       password = await bcrypt.hash(password, 10);
       const findUser = await userModel.findOne({ email: email });
       if (findUser) {
-        return res.json({ message: 'User Already Exists' });
+        return res.status(403).json({ message: 'User Already Exists' });
       } else {
         const user = new userModel({ name, email, password });
         await user.save();
@@ -23,7 +23,7 @@ module.exports = {
           email: user.email,
         });
 
-        let data = {name:result.name, email:result.email}
+        let data = { name: result.name, email: result.email };
         return res.json(data);
       }
     } catch (err) {
@@ -36,7 +36,7 @@ module.exports = {
       if (!email || !password) {
         return res
           .status(401)
-          .send({ message: 'provide necessary information' });
+          .json({ message: 'provide necessary information' });
       }
       const user = await userModel.findOne({ email: email });
       if (user) {
@@ -48,15 +48,13 @@ module.exports = {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 day
           });
-          return res.json({
-            message: 'success',
-            user: user,
-          });
+          const { password, ...data } = await user.toJSON();
+          return res.json(data);
         } else {
-          res.status(400).send({ message: 'Incorrect Password' });
+          res.status(400).json({ message: 'Incorrect Password' });
         }
       } else {
-        res.status(404).send({ message: 'user not found' });
+        res.status(404).json({ message: 'user not found' });
       }
     } catch (err) {
       console.log('Error :', err);
@@ -87,5 +85,37 @@ module.exports = {
   postLogout: (req, res) => {
     res.cookie('jwt', '', { maxAge: 0 });
     res.send({ message: 'success' });
+  },
+  editProfile: async (req, res) => {
+    try {
+      const cookie = req.cookies['jwt'];
+      if (cookie) {
+        const secret = process.env.SECRET_KEY;
+        const claims = jwt.verify(cookie, secret);
+        if (!claims) {
+          res.status(401).send({ message: 'unauthenticated' });
+        } else {
+          const name = req.body.name;
+          const image = req.files?.profilePic?.[0];
+          const email = req.body.email;
+          let updateFields = {};
+          name ? (updateFields.name = name) : '';
+          image ? (updateFields.profilePic = image) : '';
+          await userModel.updateOne(
+            { _id: claims._id },
+            { $set: { ...updateFields } }
+          );
+          const user = await userModel.findOne({
+            _id: claims._id,
+          });
+          const { password, ...data } = await user.toJSON();
+          res.json(data);
+        }
+      } else {
+        res.status(401).send({ message: 'unauthenticated' });
+      }
+    } catch (e) {
+      res.status(500).send({ message: 'internal server error' });
+    }
   },
 };
