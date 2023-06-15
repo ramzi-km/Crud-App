@@ -15,12 +15,16 @@ module.exports = {
       password = await bcrypt.hash(password, 10);
       const findUser = await userModel.findOne({ email: email });
       if (findUser) {
-        res.json({ message: 'User Already Exists' });
+        return res.json({ message: 'User Already Exists' });
       } else {
         const user = new userModel({ name, email, password });
-        let result = await user.save();
-        let data = { id: result.id, name: result.name, email: result.email };
-        res.send(data);
+        await user.save();
+        const result = await userModel.findOne({
+          email: user.email,
+        });
+
+        let data = {name:result.name, email:result.email}
+        return res.json(data);
       }
     } catch (err) {
       res.send(err);
@@ -44,8 +48,9 @@ module.exports = {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 day
           });
-          return res.send({
+          return res.json({
             message: 'success',
+            user: user,
           });
         } else {
           res.status(400).send({ message: 'Incorrect Password' });
@@ -57,7 +62,7 @@ module.exports = {
       console.log('Error :', err);
     }
   },
-  getHome: async (req, res) => {
+  getUser: async (req, res) => {
     try {
       const cookie = req.cookies['jwt'];
       if (cookie) {
@@ -70,7 +75,7 @@ module.exports = {
             _id: claims._id,
           });
           const { password, ...data } = await user.toJSON();
-          res.send(data);
+          res.json(data);
         }
       } else {
         res.status(401).send({ message: 'unauthenticated' });
