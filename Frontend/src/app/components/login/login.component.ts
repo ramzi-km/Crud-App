@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserAuthService } from 'src/app/services/user-auth.service';
 
@@ -10,22 +10,27 @@ import { UserAuthService } from 'src/app/services/user-auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  form!: FormGroup;
+  errMessage!: string | undefined;
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private userAuthService: UserAuthService
   ) {}
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      email: '',
-      password: '',
-    });
-  }
-  onSubmit(): void {
-    this.userAuthService.userLogin(this.form.getRawValue()).subscribe((res) => {
-      this.router.navigate(['/']);
-    });
+  ngOnInit(): void {}
+  onSubmit(form: NgForm): void {
+    this.userAuthService.userLogin(form.value).subscribe(
+      (res) => {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userData', JSON.stringify(res));
+        this.router.navigate(['/']);
+      },
+      (err) => {
+        this.errMessage = err.error.message;
+        setTimeout(() => {
+          this.errMessage = undefined;
+        }, 3000);
+      }
+    );
   }
 }

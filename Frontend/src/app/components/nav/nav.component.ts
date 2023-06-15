@@ -21,6 +21,8 @@ export class NavComponent implements OnInit {
   }
   logout(): void {
     this.userAuthService.userLogout().subscribe((data) => {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userData');
       this.authenticated = false;
       Emitters.authEmitter.emit(false);
     });

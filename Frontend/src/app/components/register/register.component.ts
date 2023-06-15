@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgForm,
+  NgModel,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserAuthService } from 'src/app/services/user-auth.service';
 import { User } from '../../interfaces/user.model';
@@ -11,25 +17,26 @@ import { User } from '../../interfaces/user.model';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  form!: FormGroup;
+  errMessage!: string | undefined;
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
     private userAuthService: UserAuthService
   ) {}
-  ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: '',
-      email: '',
-      password: '',
-    });
-  }
-  onSubmit(): void {
-    this.userAuthService
-      .userRegister(this.form.getRawValue())
-      .subscribe((res) => {
+  ngOnInit(): void {}
+  onSubmit(form: NgForm): void {
+    this.userAuthService.userRegister(form.value).subscribe(
+      (res) => {
+        this.errMessage = undefined;
         this.router.navigate(['/login']);
-      });
+      },
+      (err) => {
+        this.errMessage = err.error.message;
+        setTimeout(() => {
+          this.errMessage = undefined;
+        }, 3000);
+      }
+    );
   }
 }

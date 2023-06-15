@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Emitters } from 'src/app/emitters/emitters';
+import { User } from 'src/app/interfaces/user.model';
 import { UserAuthService } from 'src/app/services/user-auth.service';
 
 @Component({
@@ -10,6 +11,8 @@ import { UserAuthService } from 'src/app/services/user-auth.service';
 })
 export class HomeComponent implements OnInit {
   message = 'you are not logged in';
+  userData!: User
+  isLoggedIn = localStorage.getItem('isLoggedIn')=='true'?true:false;
   constructor(
     private http: HttpClient,
     private userAuthService: UserAuthService
@@ -18,6 +21,7 @@ export class HomeComponent implements OnInit {
     this.userAuthService.getUser().subscribe(
       (res: any) => {
         this.message = `Hi ${res.name}`;
+        this.userData = {id:res._id,name:res.name, email:res.email}
         Emitters.authEmitter.emit(true);
       },
       (err) => {
@@ -28,6 +32,7 @@ export class HomeComponent implements OnInit {
     Emitters.authEmitter.subscribe((auth: boolean) => {
       if (!auth) {
         this.message = 'you are not logged in';
+        this.isLoggedIn = localStorage.getItem('isLoggedIn')=='true'?true:false;
       }
     });
   }

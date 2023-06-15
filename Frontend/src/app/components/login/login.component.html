@@ -1,15 +1,66 @@
 <main class="form-signin w-100 m-auto">
-  <form [formGroup]="form" (submit)="onSubmit()">
+  <form #lf="ngForm" (ngSubmit)="onSubmit(lf)">
     <h1 class="h3 mb-3 fw-normal">Login</h1>
     <div class="p-1">
-        <label>Email:</label>
-      <input formControlName="email" type="email" class="form-control" placeholder="name@example.com" />
+      <label>Email:</label>
+      <input
+        ngModel
+        name="email"
+        #email="ngModel"
+        type="email"
+        class="form-control"
+        placeholder="name@example.com"
+        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+        required
+      />
+      <div *ngIf="email.errors?.['required']">
+        <label class="text-danger" *ngIf="email.invalid && email.touched"
+          >this field is required</label
+        >
+      </div>
+      <div *ngIf="email.errors?.['pattern']">
+        <label class="text-danger" *ngIf="email.invalid && email.touched"
+          >invalid email address</label
+        >
+      </div>
     </div>
     <div class="p-1">
-        <label>Password:</label>
-      <input formControlName="password" type="password" class="form-control" placeholder="Password" />
+      <label>Password:</label>
+      <input
+        ngModel
+        name="password"
+        type="password"
+        class="form-control"
+        #password="ngModel"
+        placeholder="Password"
+        required
+        pattern="[^' ']+"
+        minlength="4"
+      />
+      <div *ngIf="password.errors?.['required']">
+        <label class="text-danger" *ngIf="password.invalid && password.touched"
+          >this field is required</label
+        >
+      </div>
+      <div *ngIf="password.errors?.['pattern']">
+        <label class="text-danger" *ngIf="password.invalid && password.touched"
+          >password should not contain spaces</label
+        >
+      </div>
+      <div *ngIf="password.errors?.['minlength'] ">
+        <label class="text-danger" *ngIf="password.invalid && password.touched"
+          >password should be atleast 4 characters</label
+        >
+      </div>
     </div>
 
-    <button class="btn btn-primary w-100 py-2" type="submit">Login</button>
+    <button
+      class="btn btn-primary w-100 py-2"
+      type="submit"
+      [disabled]="lf.invalid"
+    >
+      Login
+    </button>
+    <label class="text-danger" *ngIf="errMessage">{{ errMessage }}</label>
   </form>
 </main>
