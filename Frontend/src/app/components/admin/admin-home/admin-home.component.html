@@ -1,1 +1,23 @@
-<p>admin-home works!</p>
+<div class="container card shadow mt-5">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" class="tableItems">Sl No.</th>
+        <th scope="col" class="tableItems">Name</th>
+        <th scope="col" class="tableItems">Email</th>
+        <th scope="col" class="tableItems">Options</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let user of users$ |async; let i=index">
+      <tr>
+        <th class="tableItems" scope="row" class="text-center">{{i+1}}</th>
+        <td class="tableItems">{{user.name}}</td>
+        <td class="tableItems">{{user.email}}</td>
+        <td class="tableItems">
+          <button class="btn btn-dark mx-1">Edit</button>
+          <button class="btn btn-danger">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

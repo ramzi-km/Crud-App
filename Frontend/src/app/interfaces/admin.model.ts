@@ -1,4 +1,4 @@
-export interface adminDetails {
-    email: string,
-    password: string
+export interface Admin {
+    _id?: string;
+    email?: string,
 }
