@@ -19,7 +19,7 @@
         </li>
       </ul>
       <li class="nav-item" *ngIf="authenticated">
-        <a class="btn btn-danger"  (click)="logout()">Logout</a>
+        <a class="btn btn-danger" (click)="logout()">Logout</a>
       </li>
       <li class="nav-item" *ngIf="!authenticated">
         <a class="btn btn-success" routerLink="/login">Login</a>
@@ -30,3 +30,4 @@
     </div>
   </div>
 </nav>
+<router-outlet></router-outlet>

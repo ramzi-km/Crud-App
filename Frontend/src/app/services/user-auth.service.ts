@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { User } from '../interfaces/user.model';
 
 @Injectable({
@@ -28,5 +29,14 @@ export class UserAuthService {
     return this.http.get(`${this.baseUrl}/user`, {
       withCredentials: true,
     });
+  }
+  editProfile(userDetails: FormData) {
+    return this.http.post(
+      `${this.baseUrl}/editProfile`,
+      { userDetails },
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

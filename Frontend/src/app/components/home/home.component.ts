@@ -11,8 +11,13 @@ import { UserAuthService } from 'src/app/services/user-auth.service';
 })
 export class HomeComponent implements OnInit {
   message = 'you are not logged in';
-  userData!: User
-  isLoggedIn = localStorage.getItem('isLoggedIn')=='true'?true:false;
+  userData: User = {
+    id: '',
+    name: '',
+    email: '',
+  };
+  isLoggedIn = localStorage.getItem('isLoggedIn') == 'true' ? true : false;
+  profileEdit = false;
   constructor(
     private http: HttpClient,
     private userAuthService: UserAuthService
@@ -20,8 +25,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.userAuthService.getUser().subscribe(
       (res: any) => {
-        this.message = `Hi ${res.name}`;
-        this.userData = {id:res._id,name:res.name, email:res.email}
+        this.message = `hi`;
+        this.userData = {
+          id: res._id,
+          name: res.name,
+          email: res.email,
+          profilePic: res.profilePic,
+        };
         Emitters.authEmitter.emit(true);
       },
       (err) => {
@@ -32,8 +42,13 @@ export class HomeComponent implements OnInit {
     Emitters.authEmitter.subscribe((auth: boolean) => {
       if (!auth) {
         this.message = 'you are not logged in';
-        this.isLoggedIn = localStorage.getItem('isLoggedIn')=='true'?true:false;
+        this.isLoggedIn =
+          localStorage.getItem('isLoggedIn') == 'true' ? true : false;
       }
     });
+  }
+
+  editProfile() {
+    this.profileEdit = !this.profileEdit;
   }
 }
