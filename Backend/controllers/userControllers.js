@@ -95,21 +95,23 @@ module.exports = {
         if (!claims) {
           res.status(401).send({ message: 'unauthenticated' });
         } else {
-          const name = req.body.name;
-          const image = req.files?.profilePic?.[0];
-          const email = req.body.email;
-          let updateFields = {};
-          name ? (updateFields.name = name) : '';
-          image ? (updateFields.profilePic = image) : '';
-          await userModel.updateOne(
-            { _id: claims._id },
-            { $set: { ...updateFields } }
-          );
-          const user = await userModel.findOne({
-            _id: claims._id,
-          });
-          const { password, ...data } = await user.toJSON();
-          res.json(data);
+          console.log(req.body,'adadagfaggaga',req.body.name);
+          const name=req.body.name
+          const image=req.files?.profilePic?.[0]
+          console.log(name,image)
+          // const email = req.body.email;
+          // let updateFields = {};
+          // name ? (updateFields.name = name) : '';
+          // image ? (updateFields.profilePic = image)
+          // await userModel.updateOne(
+          //   { _id: claims._id },
+          //   { $set: { ...updateFields } }
+          // );
+          // const user = await userModel.findOne({
+          //   _id: claims._id,
+          // });
+          // const { password, ...data } = await user.toJSON();
+          res.json(req.body);
         }
       } else {
         res.status(401).send({ message: 'unauthenticated' });
