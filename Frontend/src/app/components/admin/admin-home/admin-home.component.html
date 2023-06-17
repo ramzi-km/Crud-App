@@ -1,4 +1,7 @@
 <div class="container card shadow mt-5">
+  <div class="p-2">
+    <a class="btn btn-dark btn-rounded" routerLink="addUser">Add user</a>
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -8,14 +11,16 @@
         <th scope="col" class="tableItems">Options</th>
       </tr>
     </thead>
-    <tbody *ngFor="let user of users$ |async; let i=index">
+    <tbody *ngFor="let user of users$ | async; let i = index">
       <tr>
-        <th class="tableItems" scope="row" class="text-center">{{i+1}}</th>
-        <td class="tableItems">{{user.name}}</td>
-        <td class="tableItems">{{user.email}}</td>
+        <th class="tableItems" scope="row" class="text-center">{{ i + 1 }}</th>
+        <td class="tableItems">{{ user.name }}</td>
+        <td class="tableItems">{{ user.email }}</td>
         <td class="tableItems">
           <button class="btn btn-dark mx-1">Edit</button>
-          <button class="btn btn-danger"(click)="deleteUser(user._id!)">Delete</button>
+          <button class="btn btn-danger" (click)="deleteUser(user._id!)">
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>

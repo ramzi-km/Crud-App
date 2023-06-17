@@ -1,6 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import { User } from 'src/app/interfaces/user.model';
-import { deleteUserSuccess, getUsersSuccess } from './users.actions';
+import {
+  createUserSuccess,
+  deleteUserSuccess,
+  getUsersSuccess,
+} from './users.actions';
 
 export const initialState: ReadonlyArray<User> = [];
 
@@ -11,6 +15,10 @@ export const userReducer = createReducer(
   }),
   on(deleteUserSuccess, (state, { id }) => {
     let newState = state.filter((user) => user._id !== id);
+    return newState;
+  }),
+  on(createUserSuccess, (state, { resUser }) => {
+    let newState = [...state,resUser];
     return newState;
   })
 );

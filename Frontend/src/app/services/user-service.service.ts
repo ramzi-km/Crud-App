@@ -19,4 +19,9 @@ export class UserServiceService {
       withCredentials: true,
     });
   }
+  createUser(payload: User) {
+    return this.http.post<User>(`${this.baseUrl}/createUser`, payload, {
+      withCredentials: true,
+    });
+  }
 }

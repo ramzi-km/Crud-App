@@ -6,8 +6,20 @@ export const getUsersSuccess = createAction(
   '[adminHomeComponent] getUsersSuccess',
   props<{ allUsers: User[] }>()
 );
-export const deleteUser = createAction('[adminHomeComponent] deleteUser',props<{ id: string }>());
+export const deleteUser = createAction(
+  '[adminHomeComponent] deleteUser',
+  props<{ id: string }>()
+);
 export const deleteUserSuccess = createAction(
   '[adminHomeComponent] deleteUserSuccess',
   props<{ id: string }>()
+);
+
+export const createUser = createAction(
+  '[adminHomeComponent] createUser',
+  props<{ user: User }>()
+);
+export const createUserSuccess = createAction(
+  '[adminHomeComponent] createUserSuccess',
+  props<{ resUser: User }>()
 );

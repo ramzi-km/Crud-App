@@ -3,6 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, switchMap } from 'rxjs';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import {
+  createUser,
+  createUserSuccess,
   deleteUser,
   deleteUserSuccess,
   getUsers,
@@ -35,6 +37,17 @@ export class UserEffects {
         this.userService
           .deleteUser(action.id)
           .pipe(map((data) => deleteUserSuccess({ id: action.id })))
+      )
+    )
+  );
+
+  createUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createUser),
+      switchMap((action) =>
+        this.userService
+          .createUser(action.user)
+          .pipe(map((data) => createUserSuccess({ resUser: data })))
       )
     )
   );

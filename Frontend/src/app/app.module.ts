@@ -19,6 +19,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { adminAuthReducer } from './store/adminAuth/adminAuth.reducers';
 import { UserEffects } from './store/usersState/users.effects';
 import { userReducer } from './store/usersState/users.reducers';
+import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { userReducer } from './store/usersState/users.reducers';
     AdminHomeComponent,
     AdminLoginComponent,
     AdminNavComponent,
+    CreateUserComponent,
   ],
   imports: [
     BrowserModule,
