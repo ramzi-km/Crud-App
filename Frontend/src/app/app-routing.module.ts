@@ -4,6 +4,7 @@ import { AdminHomeComponent } from './components/admin/admin-home/admin-home.com
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AdminNavComponent } from './components/admin/admin-nav/admin-nav.component';
 import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavComponent } from './components/nav/nav.component';
@@ -37,8 +38,12 @@ const routes: Routes = [
       },
       {
         path: 'addUser',
-        component: CreateUserComponent
-      }
+        component: CreateUserComponent,
+      },
+      {
+        path: 'editUser/:id',
+        component: UpdateUserComponent,
+      },
     ],
   },
   {

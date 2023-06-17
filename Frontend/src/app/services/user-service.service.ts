@@ -24,4 +24,9 @@ export class UserServiceService {
       withCredentials: true,
     });
   }
+  updateUser(user: User) {
+    return this.http.put<User>(`${this.baseUrl}/updateUser/${user._id}`, user, {
+      withCredentials: true,
+    });
+  }
 }

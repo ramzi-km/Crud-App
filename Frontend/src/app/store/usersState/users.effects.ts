@@ -9,6 +9,8 @@ import {
   deleteUserSuccess,
   getUsers,
   getUsersSuccess,
+  updateUser,
+  updateUserSuccess,
 } from './users.actions';
 
 @Injectable({
@@ -48,6 +50,17 @@ export class UserEffects {
         this.userService
           .createUser(action.user)
           .pipe(map((data) => createUserSuccess({ resUser: data })))
+      )
+    )
+  );
+
+  updateUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateUser),
+      switchMap((action) =>
+        this.userService
+          .updateUser(action.user)
+          .pipe(map((data) => updateUserSuccess({ resUser: data })))
       )
     )
   );

@@ -23,3 +23,13 @@ export const createUserSuccess = createAction(
   '[adminHomeComponent] createUserSuccess',
   props<{ resUser: User }>()
 );
+
+export const updateUser = createAction(
+  '[updateComponent] updateUser',
+  props<{ user: User }>()
+);
+
+export const updateUserSuccess = createAction(
+  '[updateComponent] updateUserSuccess',
+  props<{ resUser: User }>()
+);

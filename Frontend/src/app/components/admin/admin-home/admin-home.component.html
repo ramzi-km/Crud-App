@@ -1,6 +1,7 @@
 <div class="container card shadow mt-5">
-  <div class="p-2">
+  <div class="p-2 justify-content-end">
     <a class="btn btn-dark btn-rounded" routerLink="addUser">Add user</a>
+    <input type="text" name="search" [(ngModel)]="searchText" placeholder="Search user">
   </div>
   <table class="table table-striped">
     <thead>
@@ -17,8 +18,8 @@
         <td class="tableItems">{{ user.name }}</td>
         <td class="tableItems">{{ user.email }}</td>
         <td class="tableItems">
-          <button class="btn btn-dark mx-1">Edit</button>
-          <button class="btn btn-danger" (click)="deleteUser(user._id!)">
+          <button class="btn btn-dark mx-1"[routerLink]="['editUser', user._id ]">Edit</button>
+          <button class="btn btn-danger" (click)="deleteUser(user._id!,user.name!)">
             Delete
           </button>
         </td>

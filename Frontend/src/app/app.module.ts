@@ -6,11 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { Ng2SearchPipe, Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { AdminLoginComponent } from './components/admin/admin-login/admin-login.component';
 import { AdminNavComponent } from './components/admin/admin-nav/admin-nav.component';
+import { CreateUserComponent } from './components/admin/create-user/create-user.component';
+import { UpdateUserComponent } from './components/admin/update-user/update-user.component';
 import { EditProfileComponent } from './components/home/edit-profile/edit-profile.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
@@ -19,7 +22,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { adminAuthReducer } from './store/adminAuth/adminAuth.reducers';
 import { UserEffects } from './store/usersState/users.effects';
 import { userReducer } from './store/usersState/users.reducers';
-import { CreateUserComponent } from './components/admin/create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import { CreateUserComponent } from './components/admin/create-user/create-user.
     AdminLoginComponent,
     AdminNavComponent,
     CreateUserComponent,
+    UpdateUserComponent,
   ],
   imports: [
     BrowserModule,
