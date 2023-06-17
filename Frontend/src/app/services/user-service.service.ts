@@ -14,4 +14,9 @@ export class UserServiceService {
       withCredentials: true,
     });
   }
+  deleteUser(id: string) {
+    return this.http.delete(`${this.baseUrl}/deleteUser/${id}`, {
+      withCredentials: true,
+    });
+  }
 }

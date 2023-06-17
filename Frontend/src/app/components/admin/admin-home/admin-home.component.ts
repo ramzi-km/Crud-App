@@ -6,15 +6,16 @@ import * as UsersSelecter from '../../../store/usersState/users.selectors';
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
-  styleUrls: ['./admin-home.component.css']
+  styleUrls: ['./admin-home.component.css'],
 })
 export class AdminHomeComponent implements OnInit {
-  constructor(private store:Store) {
-    
-  }
-  ngOnInit(): void {  
+  constructor(private store: Store) {}
+  ngOnInit(): void {
     this.store.dispatch(UsersActions.getUsers());
   }
-  users$=this.store.select(UsersSelecter.selectUsers); 
-
+  users$ = this.store.select(UsersSelecter.selectUsers);
+  deleteUser(id: string) {
+    this.store.dispatch(UsersActions.deleteUser({ id }));
+    console.log(id)
+  }
 }

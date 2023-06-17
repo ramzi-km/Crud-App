@@ -12,7 +12,7 @@ import { UserAuthService } from 'src/app/services/user-auth.service';
 export class HomeComponent implements OnInit {
   message = 'you are not logged in';
   userData: User = {
-    id: '',
+    _id: '',
     name: '',
     email: '',
   };
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
       (res: any) => {
         this.message = `hi`;
         this.userData = {
-          id: res._id,
+          _id: res._id,
           name: res.name,
           email: res.email,
           profilePic: res.profilePic,
