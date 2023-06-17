@@ -48,8 +48,27 @@ module.exports = {
           res.status(401).send({ message: 'unauthenticated' });
         } else {
           const users = await userModel.find().lean();
-          console.log(users)
           return res.json(users);
+        }
+      } else {
+        res.status(401).send({ message: 'unauthenticated' });
+      }
+    } catch (error) {
+      res.status(500).send({ message: 'internal server error' });
+    }
+  },
+  deleteUser: async (req, res) => {
+    try {
+      const cookie = req.cookies['adminJwt'];
+      if (cookie) {
+        const secret = process.env.SECRET_KEY2;
+        const claims = jwt.verify(cookie, secret);
+        if (!claims) {
+          res.status(401).send({ message: 'unauthenticated' });
+        } else {
+          let userId = req.params.id;
+          await userModel.deleteOne({ _id: userId });
+          return res.json({ message: 'success' })
         }
       } else {
         res.status(401).send({ message: 'unauthenticated' });
