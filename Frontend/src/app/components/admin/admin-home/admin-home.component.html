@@ -1,7 +1,12 @@
 <div class="container card shadow mt-5">
-  <div class="p-2 justify-content-end">
+  <div class="p-2 d-flex justify-content-between">
+    <input
+      type="text"
+      name="search"
+      [(ngModel)]="searchText"
+      placeholder="Search user"
+    />
     <a class="btn btn-dark btn-rounded" routerLink="addUser">Add user</a>
-    <input type="text" name="search" [(ngModel)]="searchText" placeholder="Search user">
   </div>
   <table class="table table-striped">
     <thead>
@@ -13,13 +18,26 @@
       </tr>
     </thead>
     <tbody *ngFor="let user of users$ | async; let i = index">
-      <tr>
+      <tr
+        *ngIf="
+          searchText == '' ||
+          user.name?.toLocaleLowerCase()?.includes(searchText) 
+        "
+      >
         <th class="tableItems" scope="row" class="text-center">{{ i + 1 }}</th>
         <td class="tableItems">{{ user.name }}</td>
         <td class="tableItems">{{ user.email }}</td>
         <td class="tableItems">
-          <button class="btn btn-dark mx-1"[routerLink]="['editUser', user._id ]">Edit</button>
-          <button class="btn btn-danger" (click)="deleteUser(user._id!,user.name!)">
+          <button
+            class="btn btn-dark mx-1"
+            [routerLink]="['editUser', user._id]"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger"
+            (click)="deleteUser(user._id!, user.name!)"
+          >
             Delete
           </button>
         </td>

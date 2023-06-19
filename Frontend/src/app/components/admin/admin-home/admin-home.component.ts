@@ -14,7 +14,7 @@ export class AdminHomeComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(UsersActions.getUsers());
   }
-  searchText!: string 
+  searchText: string = '';
   users$ = this.store.select(UsersSelecter.selectUsers);
   deleteUser(id: string, name: string) {
     Swal.fire({
